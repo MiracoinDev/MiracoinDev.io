@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Наблюдатель для плавного появления контент-секций
     const sections = document.querySelectorAll('.content-section');
-    const observerOptions = {
-      threshold: 0.2
-    };
+    const observerOptions = { threshold: 0.2 };
   
     const observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
@@ -16,10 +14,22 @@ document.addEventListener('DOMContentLoaded', function() {
   
     sections.forEach(section => observer.observe(section));
   
-    // Изменение фона навигации при прокрутке
-    const nav = document.querySelector('.fixed-nav');
+    // Скрытие навигации при прокрутке
+    let lastScrollTop = 0;
+    const nav = document.getElementById('fixedNav');
+  
     window.addEventListener('scroll', function() {
-      nav.style.background = window.scrollY > 50 ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.7)';
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      if (scrollTop > lastScrollTop && scrollTop > 70) {
+        // Скроллим вниз — скрываем навигацию
+        nav.classList.add('nav-hidden');
+      } else {
+        // Скроллим вверх — показываем навигацию
+        nav.classList.remove('nav-hidden');
+      }
+      
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     });
   });
   
